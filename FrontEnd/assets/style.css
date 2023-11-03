@@ -28,6 +28,11 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
+a {
+	text-decoration: none; /*Pour cacher le soulignage des liens de la nav*/
+}
+
 body {
 	line-height: 1;
 }
@@ -47,7 +52,10 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
-body {
+
+
+/** PARTIE GENERALE : index.html**/
+.main-conteneur {
 	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
