@@ -260,6 +260,10 @@ footer nav ul {
 	font-weight: 700;
 }
 
+.logout-button{
+	display: none;
+}
+
 #connection {
 	display: flex; /*en flexbox section conneciotn log in */
     flex-direction: column;
@@ -308,4 +312,15 @@ footer nav ul {
 
 .footerLogin {
 	background-color: #fff;
+}
+
+#submitLog {
+    cursor: pointer;
+    background-color: #1D6154; /* Couleur de fond par défaut proche de #1D6154 */
+    color: #fff; /* Couleur du texte par défaut */
+    transition: background-color 0.3s; /* Transition pour une animation fluide */
+}
+
+#submitLog:hover {
+    background-color: #005033; /* Couleur de fond au survol */
 }
