@@ -13,6 +13,58 @@
 
 </head>
 <body>
+	<aside class="modale" id="modale">
+		<div class="modale-conteneur-delete">
+			<span class="close">&times;</span>
+			<div class="modale-title">
+				<span class="galerie-photo">Galerie photo</span>
+			</div>
+			<div class="gallery-modale"><!--GENERE DYNAMIQUEMENT => CONFERE JS index.js--></div>
+			<hr>
+			<div class="modale">
+				<button class="add">Ajouter une photo</button>
+			</div>
+		</div>
+
+		<div class="modale-conteneur-add hide">
+			<span class="close">
+				&times;
+			</span>
+			<i class="fa-solid fa-arrow-left fa-lg"></i>
+			<div class="modale-title">
+				<span class="galerie-photo">Ajout photo</span>
+			</div>
+			<form class="add-form" method="post" >
+				<div class="add-form-conteneur">
+					<div class="generique-conteneur">
+						<i class="fa-solid fa-image fa-sm"></i>
+						<label class="add-img-label" for="add-img">+ Ajouter une photo</label>
+						<input class="add-img-input clear-input" type="file" name="add-img" id="add-img" accept=".jpg, .jpeg, .png" >
+						<span>jpg, png : 4mo max</span>
+					</div>
+					<div class="preview-projet"></div>
+				</div>
+				<div class="add-form-inputs">
+					<label class="title label" for="title">Titre</label>
+					<input class="title-input input-conteneur clear-input" type="text" name="title" id="title">
+					<label class="category label" for="category">Catégorie</label>
+					<select class="categorie-input input-conteneur" name="category" id="category">
+						<option class="option" value="1">Objet</option>
+						<option class="option" value="2">Appartement</option>
+						<option class="option" value="3">Hôtel & Restaurant</option>
+					</select>
+					<div class="hr">
+						<button class="add-button not-allowed" type="submit">Valider</button>
+					</div> 
+				</div>
+			</form>
+			<div class="message">
+				<span class="success"></span>
+				<span class="failure"></span>	
+			</div>
+		</div>
+
+	</aside>
 	<div class="barre mode-edition"> 		<!-- barre pour le MODE EDITION -->
 		<div class="logo-pen">
 			<i class="fa-regular fa-pen-to-square fa-lg fa-pen-barre"></i>		

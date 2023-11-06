@@ -169,5 +169,62 @@ if (sessionStorage.token == null) { //Si le token de session n'est pas présent
     document.querySelector(".logout-button").style.display = "none"; //on masque aussi le bouton de déconnexion
     document.querySelector(".login-button").style.display = "block";//on affiche le bouton de connexion 
     document.querySelector(".filters-btns").style.display = "flex"; //affiche les boutons de filtres
-} // ça donne à l'user la possibilité de se connecter et de voir les projets 
+} // ça donne à l'utilisateur la possibilité de se connecter et de voir les projets 
 
+// // ******************************************************************************
+/**********************FENETRE MODALE*************************************************/
+// // ******************************************************************************
+
+let modale = null;
+
+document.querySelector('.open').addEventListener('click', (event) =>{
+    event.preventDefault();
+    const target = document.querySelector('.modale'); 
+    target.style.display = "flex";
+    modale = target;
+    modale.addEventListener('click', closeModale);
+    let closeButton =  modale.querySelectorAll('.close');
+
+    closeButton.forEach((cross) => {
+        cross.addEventListener('click', closeModale);
+    })  
+    modale.querySelector('.modale-conteneur-delete').addEventListener('click', stopPropagation);
+    modale.querySelector('.modale-conteneur-delete').addEventListener('click', stopPropagation);
+})
+
+const closeModale = function(event) {
+    if(modale === null) return
+    event.preventDefault();
+
+    modale.style.display = "none";
+    modale.removeEventListener('click', closeModale);
+    let closeButton = modale.querySelectorAll('.close');
+
+    closeButton.forEach((cross) => {
+        cross.removeEventListener('click', closeModale);    
+    })  
+
+    let deleteModale = document.querySelector('.modale-conteneur-delete');
+    let addModale = document.querySelector('.modale-conteneur-add');
+    deleteModale.classList.remove('hide');
+    addModale.classList.add('hide');
+    modale.querySelector('.modale-conteneur-delete').removeEventListener('click', stopPropagation);
+    modale.querySelector('.modale-conteneur-add').removeEventListener('click', stopPropagation);
+    modale = null;
+
+    clearInputs()
+}
+
+const stopPropagation = function (event) {
+    event.stopPropagation();
+}
+  
+function clearInputs() {
+        nvTitle.value = "";
+        nvProjet.value="";
+        document.querySelector(".generique-conteneur").style.display = "flex";
+        imgPreview.innerHTML=""
+        imgPreview.style.display = "none";
+        document.querySelector('.success').textContent = ""
+        document.querySelector('.failure').textContent = ""
+}
