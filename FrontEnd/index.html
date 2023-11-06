@@ -13,7 +13,12 @@
 
 </head>
 <body>
-
+	<div class="barre mode-edition"> 		<!-- barre pour le MODE EDITION -->
+		<div class="logo-pen">
+			<i class="fa-regular fa-pen-to-square fa-lg fa-pen-barre"></i>		
+		</div>
+		<span class="barre-texte">Mode édition</span>
+	</div>
 	<div class="main-conteneur"> <!-- Ajout d'un conteneur main -->
 <header>
 	<h1>Sophie Bluel <span>ARCHITECTE D'INTERIEUR</span></h1>
@@ -30,7 +35,7 @@
 <main>
 	<section id="introduction">
 		<figure>
-			<img src="./assets/images/sophie-bluel.png" alt="">
+			<img src="./assets/images/sophie-bluel.png" alt="Photo de Sophie Bluel"/>
 		</figure>
 		<article>
 			<h2>Designer d'espace</h2>
@@ -40,7 +45,16 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+
+		<div class="div-projets"> 	<!-- PARTIE BARRE pour le MODE EDITION -->
+			<h2>Mes Projets</h2>
+				<div class="mode-edition">
+					<i class="fa-regular fa-pen-to-square fa-lg fa-pen-projets "></i>
+					<span class="open" id="open">modifier</span>
+				</div>
+		</div>
+<!-- ////////////////////////////////////////////////////////////////////////// -->
+
 		<div id="filters" class="filters-btns"></div> <!-- CONFERE JS index.js => *Création dynamique des boutons filtres-->
 		<div class="gallery"> <!-- CONFERE JS index.js => *Création dynamique des galeries --></div>
 	</section>

@@ -129,4 +129,45 @@ function affichageProjetsModale() { // Fonction pour afficher les projets modaux
     });
 }
 
-affichageProjetsModale(); // Appelle la fonction pour afficher les projets modaux
+affichageProjetsModale(); // Appel la fonction pour afficher les projets modaux
+
+
+// // ******************************************************************************
+/*Suite au login validé --> en mode édition (homepage edit)*/
+// // ******************************************************************************
+
+//Si token session présent, alors l'user est connecté - alors page passe en "mode édition" donc user peut modifier quelque chose sur la page
+if(sessionStorage.token !== null) { // Si token de session (preuve que l'user est connecté à la page) est présent
+    let modeEdition = document.querySelectorAll(".mode-edition"); // Sélectionne tous les éléments avec la classe "mode-edition"
+    modeEdition.forEach((edition) => {
+        edition.style.display = "flex"; // Affiche les éléments en mode édition en définissant leur style "display" sur "flex"
+    })
+
+    document.querySelector(".filters-btns").style.display = "none"; // On masque avec none les élements boutons de filtres avec la classe "filter-btns"
+    document.querySelector(".div-projets").style.margin = "0 0 90px 0"; // Modifie la marge de l'élément avec la classe "div-projets"
+
+    function logout() { //On crée une fonction "logout" qui permet à l'utilisateur de se déconnecter
+        sessionStorage.clear(); // Lorsqu'il clique sur le bouton de déconnexion, la fonction efface le token de session
+        window.location.href = "index.html"; //puis redirige l'utilisateur vers la page d'accueil
+    }
+
+    document.querySelector(".login-button").style.display = "none"; //On cache le bouton de connexion 
+    let logoutButton = document.querySelector(".logout-button"); //et on affiche le bouton de déconnexion
+    logoutButton.style.display="block";
+
+    logoutButton.addEventListener('click', () => { 
+        logout(); // on crée événement pour permettre à l'utilisateur de se déconnecter en cliquant sur le bouton
+    });
+} 
+
+if (sessionStorage.token == null) { //Si le token de session n'est pas présent
+    let modeEditionNone = document.querySelectorAll(".mode-edition");
+    modeEditionNone.forEach((none) => { // ça signifie que l'utilisateur n'est pas connecté
+        none.style.display = "none"; //Dans ce cas, on masque le "mode édition,"
+    })
+
+    document.querySelector(".logout-button").style.display = "none"; //on masque aussi le bouton de déconnexion
+    document.querySelector(".login-button").style.display = "block";//on affiche le bouton de connexion 
+    document.querySelector(".filters-btns").style.display = "flex"; //affiche les boutons de filtres
+} // ça donne à l'user la possibilité de se connecter et de voir les projets 
+

@@ -145,7 +145,6 @@ nav li img{
 }
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
 }
 
 /*************************/
@@ -182,7 +181,7 @@ nav li img{
 }
 
 /* Styles pour un bouton de filtre survolé */
-.filter-buttons button:hover {
+.filters-btns button:hover {
     background-color: #1D6154;
 	color: #fff;
 
@@ -260,9 +259,9 @@ footer nav ul {
 	font-weight: 700;
 }
 
-.logout-button{
+/* .logout-button{
 	display: none;
-}
+} */
 
 #connection {
 	display: flex; /*en flexbox section conneciotn log in */
@@ -324,3 +323,56 @@ footer nav ul {
 #submitLog:hover {
     background-color: #005033; /* Couleur de fond au survol */
 }
+
+
+/**************************************/
+/*CSS pour le MODE EDITION************/
+/*************************************/
+
+.mode-edition {
+	display: none;
+	align-items: center;
+}
+
+.barre {
+	background-color: black;
+	height: 59px;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	font-family: 'Work Sans';
+}
+
+.logo-pen {
+	margin-right: 9px;
+}
+
+.fa-pen-barre {
+	color: #fff;
+}
+
+.barre-texte {
+	color: #fff;
+	font-size: 15px;
+}
+
+.hide {
+	display: none;
+}
+
+.div-projets {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.div-projets span:hover {
+	cursor: pointer;
+}
+
+.fa-pen-projets {
+	margin-left: 30px;
+	margin-right: 8px;
+}
+
+/******************************************************************************/
