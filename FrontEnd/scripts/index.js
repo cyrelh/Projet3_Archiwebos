@@ -308,30 +308,31 @@ function clearInputs() { //fonction effectuant plusieurs opérations de nettoyag
 /************************** Fenêtre "ajout de projet" ***************************/
 // ******************************************************************************//
 
-let newProjet = document.querySelector('.add-img-input');
-let imgPreview = document.querySelector(".preview-projet");
-let newCateg = document.querySelector(".categorie-input");
-let newTitle = document.querySelector(".title-input");
-let addBtn = document.querySelector(".add-button");
-newCateg.value="1";
+let newProjet = document.querySelector('.add-img-input');  // input de fichier pour ajouter une image --> on sélectionne l'élément HTML avec la classe "add-img-input"  et stocke cet élément dans la variable newProjet 
+let imgPreview = document.querySelector(".preview-projet"); //espace réservé pour prévisualiser une image --> on sélectionne un élément HTML avec la classe "preview-projet" et stocke cet élément dans la variable imgPreview
+let slcCateg = document.querySelector(".categorie-input"); //un champ de sélection de catégorie --> on sélectionne un élément HTML qui a la classe "categorie-input" et le stocke dans la variable newCateg
+let newTitle = document.querySelector(".title-input");//un champ de saisie pour le titre du projet --> on sélectionne un élément HTML qui a la classe "title-input" et le stocke dans la variable newTitle
+let addBtn = document.querySelector(".add-button"); // bouton pour ajouter un projet --> on sélectionne un élément HTML avec la classe "add-button" et le stocke dans la variable addBtn.
+slcCateg.value="1"; // définit la valeur par défaut du champ de sélection de catégorie (newCateg) à "1".
 
-// ********** Pour passer d'une fenêtre à l'autre **********
+// ********** POUR gérer la transition entre deux vues ou fenêtres, l'une pour supprimer un projet et l'autre pour ajouter un projet **********
 
-
+// on sélectionne des éléments HTML avec des classes et ces éléments sont stockés dans les variables deleteModale, addModale, et addProjets
 let deleteModale = document.querySelector('.modale-conteneur-delete');
 let addModale= document.querySelector('.modale-conteneur-add');
 let addProjets = document.querySelector('.add');
 
-addProjets.addEventListener('click', (event) => {
-    event.preventDefault(event);
-    deleteModale.classList.add('hide');
-    addModale.classList.remove('hide');
+addProjets.addEventListener('click', (event) => { // écouteur d'événements au clic sur l'élément addProjets --> quand le user clique dessus ça déclenche la fonction de rappel avec objet "event
+    event.preventDefault(event); //fonction qui empêche le comportement par défaut du clic
+    deleteModale.classList.add('hide'); // on ajoute la classe CSS "hide" pour masquer l'élément deleteModale
+    addModale.classList.remove('hide'); //on supprime la classe "hide" de l'élément addModale, ce qui permet de passer d'une fenêtre (ou vue) à l'autre
 })
 
-let retourArrow = document.querySelector(".fa-arrow-left");
-retourArrow.addEventListener('click', (event) => {
-    event.preventDefault();
-    deleteModale.classList.remove('hide');
-    addModale.classList.add('hide');
-    clearInputs()
+let retourArrow = document.querySelector(".fa-arrow-left"); // flèche de retour ou de retour en arrière --> on sélectionne un élément HTML avec la classe "fa-arrow-left" 
+retourArrow.addEventListener('click', (event) => { //Lorsque l'utilisateur clique sur cet élément flèche retour en arrière, la fonction de rappel est déclenchée
+    event.preventDefault(); // empêche le comportement par défaut du clic
+    deleteModale.classList.remove('hide'); //supprime la classe "hide" de l'élément deleteModale pour réafficher la fenêtre de suppression
+    addModale.classList.add('hide'); //ajoute la classe "hide" à l'élément addModale pour masquer la fenêtre d'ajout
+    clearInputs() //appelle la fonction clearInputs() pour réinitialiser les champs du formulaire
 })
+

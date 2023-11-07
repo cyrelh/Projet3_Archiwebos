@@ -522,3 +522,124 @@ hr {
 	color: #A80306;
 	cursor: pointer;
 }
+
+.fa-image {
+	color: #b9c5cc; 
+	line-height: 0;
+	font-weight: 500;
+	font-size: 5em;
+	margin: 50px 0 0 0;
+	padding: 20px;
+
+} 
+
+ .add-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.add-form-conteneur { 
+	background-color: #e8f1f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+	border-radius: 4px;
+}
+
+.add-form-conteneur span {
+	font-family: "Work Sans";
+	font-weight: 400;
+	font-size: 14px;
+	color: #444;
+	margin: 10px 0 25px;
+}
+
+.preview-conteneur {
+	width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.preview-conteneur img {
+	width: 70%;
+}
+
+.preview-projet, .generique-conteneur { 
+	display: flex; /*on passe en flexbox */
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-img-label { /*style de l'étiquette AJOUTER une photo*/
+	font-family: 'Work Sans';
+    font-weight: 500;
+    color: #306685;
+    background-color: #CBD6DC;
+    width: 100%;
+    text-align: center;
+    border-radius: 60px;
+    padding: 15px 33px;
+    border: 0;
+	cursor: pointer;
+	margin-top: 35px;
+}
+.add-img-input {
+	display: none;
+}
+
+.add-form-inputs { /*Titre et Catégorie avec inputs l'un endessous de l'autre en colomne*/
+	width: 100%;
+	display: flex;
+    flex-direction: column;
+	margin-top: 30px;
+}
+
+.label {
+	font-family: "Work Sans";
+	font-size: 14px;
+	font-weight: 500;
+	margin-bottom: 10px;
+}
+
+.input-conteneur {
+	height: 35px;
+	padding: 0;
+	margin-bottom: 20px;
+	border: 0;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+
+.hr {
+	display: flex;
+    justify-content: center;
+	border-top: 1.4px solid #B3B3B3;
+	margin-top: 25px;
+	padding-top: 35px;
+}
+
+.add-button { /*Style du bouton valider*/
+	font-family: 'Syne';
+    font-weight: 700;
+    color: white;
+    width: 240px;
+    text-align: center;
+    border-radius: 60px;
+    padding: 10px 49px;
+    border: 0;
+    margin-bottom: 23px;
+    cursor: pointer;
+}
+
+.not-allowed {
+    background-color: #A7A7A7; /* pas validé --> gris background bouton valider*/
+}
+
+.allowed {
+	background-color: #1D6154; /* validé --> vert background bouton valider*/
+}
+
