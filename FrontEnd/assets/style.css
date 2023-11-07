@@ -507,3 +507,18 @@ hr {
 	font-family: "Syne";
 	color: #A80306;
 }
+
+/*************** FENETRE Modale 2 (AJOUT PHOTO) ***************/
+
+.fa-arrow-left {
+	position: absolute;
+	top: 45px;
+	left: 36px;
+	color: #000;
+	font-size: 25px;
+}
+
+.fa-arrow-left:hover {
+	color: #A80306;
+	cursor: pointer;
+}

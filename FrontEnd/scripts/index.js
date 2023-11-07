@@ -132,34 +132,32 @@ function affichageProjetsModale() { // // Cette fonction affiche les projets dan
             let projets = work; // Crée une variable "projets" pour stocker les données du projet en cours
             let galerieModale = document.querySelector(".gallery-modale"); // Sélectionne l'élément HTML avec la classe "gallery-modale"
             let conteneurModale = document.createElement("figure"); // Crée un élément de type "figure" pour afficher un projet
-            let elementImageModale = document.createElement("img"); // Crée un élément "img" pour afficher l'image du projet modal
+            let elementPicModale = document.createElement("img"); // Crée un élément "img" pour afficher l'image du projet modal
             let arrow = document.createElement("i"); // Crée un élément "i" pour afficher une icône de flèche
             let trash = document.createElement("i"); // Crée un élément "i" pour afficher une icône de poubelle (pour la suppression du projet)
-            let elementTexteModale = document.createElement("figcaption"); // Crée un élément "figcaption" pour afficher le texte (légende) du projet modal
+            let elementTextModale = document.createElement("figcaption"); // Crée un élément "figcaption" pour afficher le texte (légende) du projet modal
 
-            elementImageModale.src = work.imageUrl; // Définit l'URL de l'image du projet
-           
+            elementPicModale.src = work.imageUrl; // Définit l'URL de l'image du projet
             trash.classList.add("fa-solid", "fa-trash-can", "icon");   // Ajoute des classes aux éléments HTML pour le style
             conteneurModale.setAttribute("id", work.id);  // Attribut un ID à l'élément de conteneur du projet modal
             trash.setAttribute("id", work.id);  // Attribut un ID à l'icône de poubelle du projet modal
             conteneurModale.setAttribute("data-id", work.categoryId);// Attribut un attribut "data-id" à l'élément de conteneurModale en utilisant l'ID de catégorie du projet modal
             // Ajoute des classes aux éléments pour le style
-            elementImageModale.classList.add("img-projets", "img-projets-modale");
+            elementPicModale.classList.add("img-projets", "img-projets-modale");
             conteneurModale.classList.add("projets-modale");
             
             // Ajoute les éléments à la galerie modale
             galerieModale.appendChild(conteneurModale); // Ajoute le conteneur du projet modal à la galerie modale
-            conteneurModale.appendChild(elementImageModale); // Ajoute l'image du projet modal au conteneur
+            conteneurModale.appendChild(elementPicModale); // Ajoute l'image du projet modal au conteneur
             conteneurModale.appendChild(arrow); // Ajoute l'icône de flèche au conteneur
             conteneurModale.appendChild(trash); // Ajoute l'icône de poubelle au conteneur
-            conteneurModale.appendChild(elementTexteModale); // Ajoute le texte du projet modal au conteneur
+            conteneurModale.appendChild(elementTextModale); // Ajoute le texte du projet modal au conteneur
 
  /////////////////////////////////////////////////////////////////////////////////////////////////
  //  ********** Suppression des travaux **********
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
     trash.addEventListener('click', (event) => deleteProjet(event));   // Ajoute un événement de clic pour la suppression du projet
-
 
     const token = sessionStorage.getItem("token"); // Récupère le jeton de session stocké dans le sessionStorage
     const idProject = projets.id; // récupère l'ID du projet modal qu'on souhaite supprimer
@@ -190,8 +188,6 @@ function affichageProjetsModale() { // // Cette fonction affiche les projets dan
 
        })
     })
-
-
 
     .then(() => {
         travaux = document.querySelectorAll(".projets"); // Sélectionne tous les éléments ayant la classe "projets" et les stocke dans la variable "travaux"
@@ -264,6 +260,8 @@ document.querySelector('.open').addEventListener('click', (event) =>{ //On ajout
         cross.addEventListener('click', closeModale);
     })  
     modale.querySelector('.modale-conteneur-delete').addEventListener('click', stopPropagation); //On ajoute un écouteur d'événement de clic à l'élément "modale-conteneur-delete" à l'intérieur de l'élément "modale". Lorsque cet élément est cliqué, la fonction "stopPropagation" sera appelée
+    modale.querySelector('.modale-conteneur-add').addEventListener('click', stopPropagation);
+
 })
 
 const closeModale = function(event) { //On déclare une fonction nommée "closeModale" qui prend un objet "event" en argument.
@@ -295,11 +293,45 @@ const stopPropagation = function (event) { //empêche la propagation de l'évén
 }
 
 function clearInputs() { //fonction effectuant plusieurs opérations de nettoyage pour réinitialiser certains éléments de la page après la fermeture de la modale
-        nvTitle.value = ""; //réinitialise la valeur de l'élément avec l'ID "nvTitle" à une chaîne vide, effaçant ainsi tout contenu saisi dans cet élément
-        nvProjet.value="";
+        newTitle.value = ""; //réinitialise la valeur de l'élément avec l'ID "nvTitle" à une chaîne vide, effaçant ainsi tout contenu saisi dans cet élément
+        newProjet.value="";
         document.querySelector(".generique-conteneur").style.display = "flex"; //sert à réinitialiser le conteneur de la page pour qu'il soit de nouveau visible
         imgPreview.innerHTML="" //sert pour réinitialiser l'aperçu d'une image après la fermeture de la modale
         imgPreview.style.display = "none"; // sert pour masquer l'aperçu de l'image après la fermeture de la modale
         document.querySelector('.success').textContent = "" //utilisé pour afficher des messages de succès, réinitialise son contenu texte à une chaîne vide, effaçant tout message de succès précédemment affiché
         document.querySelector('.failure').textContent = "" // idem mais effaçant tout message d'échec précédemment affiché
 }
+
+
+
+// ******************************************************************************//
+/************************** Fenêtre "ajout de projet" ***************************/
+// ******************************************************************************//
+
+let newProjet = document.querySelector('.add-img-input');
+let imgPreview = document.querySelector(".preview-projet");
+let newCateg = document.querySelector(".categorie-input");
+let newTitle = document.querySelector(".title-input");
+let addBtn = document.querySelector(".add-button");
+newCateg.value="1";
+
+// ********** Pour passer d'une fenêtre à l'autre **********
+
+
+let deleteModale = document.querySelector('.modale-conteneur-delete');
+let addModale= document.querySelector('.modale-conteneur-add');
+let addProjets = document.querySelector('.add');
+
+addProjets.addEventListener('click', (event) => {
+    event.preventDefault(event);
+    deleteModale.classList.add('hide');
+    addModale.classList.remove('hide');
+})
+
+let retourArrow = document.querySelector(".fa-arrow-left");
+retourArrow.addEventListener('click', (event) => {
+    event.preventDefault();
+    deleteModale.classList.remove('hide');
+    addModale.classList.add('hide');
+    clearInputs()
+})
