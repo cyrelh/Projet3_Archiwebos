@@ -336,3 +336,40 @@ retourArrow.addEventListener('click', (event) => { //Lorsque l'utilisateur cliqu
     clearInputs() //appelle la fonction clearInputs() pour réinitialiser les champs du formulaire
 })
 
+// ****************************************************************************************************//
+/************************** Prévisualisation du file photo lors de l'upload" ***************************/
+// ****************************************************************************************************//
+
+newProjet.addEventListener('change', previewImg); //Lorsque l'utilisateur sélectionne un fichier à travers le champ newProjet, la fonction previewImg sera déclenchée
+
+function previewImg() { //La fonction previewImg est déclenchée lorsqu'un fichier est sélectionné dans le champ newProjet
+
+    let extension = /\.(jpe?g|png)$/i; //vérifie si le nom du fichier se termine par les extensions ".jpeg" ou ".jpg" ou ".png"
+
+    if(this.files.length === 0 || !extension.test(this.files[0].name)) { // Si aucun fichier n'est sélectionné ou si le nom du fichier ne correspond pas à l'extension recherchée
+        return;     // On quitte la fonction prématurément, car il n'y a pas de fichier valide à traiter
+    }
+
+    let file = this.files[0]; // On récupère le 1er fichier de la liste des fichiers sélectionnés (this.files)
+    let fileRead = new FileReader();// On crée une instance de FileReader, qui nous permettra de lire le contenu du fichier
+    fileRead.readAsDataURL(file);// On demande au FileReader de lire le contenu du fichier sous forme de data URL
+    fileRead.addEventListener('load', (event) => displayWork(event, file));// On ajoute un gestionnaire d'événement qui sera déclenché lorsque la lecture du fichier sera terminée
+}// Lorsque la lecture est terminée, la fonction displayWork sera appelée avec les données du fichier (event) et le fichier lui-même (file)
+
+function displayWork(event, file) {  //fonction displayWork est appelée lorsque la lecture du fichier est terminé
+    let previewWork = document.querySelector('.preview-projet'); // espace réservé pour prévisualiser une image --> on sélectionne l'élément HTML avec la classe "preview-projet"
+    previewWork.style.display="flex" //change son style pour le faire apparaître en utilisant previewWork.style.display = "flex".
+
+    let addWork = document.querySelector('.generique-conteneur') //  conteneur de formulaire --> la fonction sélectionne l'élément HTML avec la classe "generique-conteneur" 
+    addWork.style.display = "none"; //change son style pour le masquer en utilisant "none"
+
+    let figConteneur = document.createElement('figure'); //crée un nouvel élément HTML <figure> utilisé pour afficher une image ou une illustration
+    figConteneur.classList.add('preview-conteneur'); // lui ajoute la classe CSS "preview-conteneur" 
+    
+    let figContent = document.createElement('img'); //fonction crée un élément HTML <img> pour afficher l'image prévisualisée
+    figContent.src = event.target.result; //attribue à cet élément la source de l'image prévisualisée 
+    figContent.classList.add('preview-img'); //lui ajoute la classe "preview-img" pour le style
+
+    previewWork.appendChild(figConteneur); // pour afficher la prévisualisation de l'image --> la fonction ajoute l'élément <figure> créé (figConteneur) en tant qu'enfant de l'élément avec la classe "preview-projet" (previewWork)
+    figConteneur.appendChild(figContent);//pour afficher l'image elle-même --> ajoute également l'élément <img> (figContent) en tant qu'enfant de l'élément <figure> (figConteneur) 
+}
