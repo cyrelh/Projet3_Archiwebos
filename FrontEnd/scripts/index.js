@@ -337,7 +337,7 @@ retourArrow.addEventListener('click', (event) => { //Lorsque l'utilisateur cliqu
 })
 
 // ****************************************************************************************************//
-/************************** Prévisualisation du file photo lors de l'upload" ***************************/
+/************************** Prévisualisation du file photo lors de l'upload ***************************/
 // ****************************************************************************************************//
 
 newProjet.addEventListener('change', previewImg); //Lorsque l'utilisateur sélectionne un fichier à travers le champ newProjet, la fonction previewImg sera déclenchée
@@ -372,4 +372,28 @@ function displayWork(event, file) {  //fonction displayWork est appelée lorsque
 
     previewWork.appendChild(figConteneur); // pour afficher la prévisualisation de l'image --> la fonction ajoute l'élément <figure> créé (figConteneur) en tant qu'enfant de l'élément avec la classe "preview-projet" (previewWork)
     figConteneur.appendChild(figContent);//pour afficher l'image elle-même --> ajoute également l'élément <img> (figContent) en tant qu'enfant de l'élément <figure> (figConteneur) 
+}
+
+
+// ****************************************************************************************************//
+/************************** Changement couleur bouton quand formulaire rempli ***************************/
+// ****************************************************************************************************//
+
+newTitle.addEventListener('input', colorButton) // Lorsque l'utilisateur saisit quelque chose dans le champ du titre, déclenche la fonction colorButton
+newProjet.addEventListener('input', colorButton)// Lorsque l'utilisateur interagit avec le champ du projet, déclenche la fonction colorButton
+slcCateg.addEventListener('input', colorButton) // Lorsque l'utilisateur change la sélection de la catégorie, déclenche la fonction colorButton
+
+function colorButton() { // fonction pour la couleur du bouton, on vérifie si les conditons sont vérifiées  
+    if (!newTitle.value || !imgPreview.firstChild || !slcCateg.value) { // Si le champ du titre est vide OU s'il n'y a pas d'élément enfant dans imgPreview (pas de prévisualisation d'image) OU si aucune catégorie n'a été sélectionnée
+       // le bouton d'ajout est désactivé
+        addBtn.classList.remove("allowed");// Retire la classe "allowed" du bouton d'ajout
+        addBtn.classList.add("not-allowed");     // Le bouton d'ajout est désactivé (not-allowed) car toutes les conditions ne sont pas remplies.
+        return // SInon
+    }
+
+    if(newTitle.value != "" && imgPreview.firstChild && slcCateg.value != "") {  // Si le champ du titre a une valeur, s'il y a une prévisualisation d'image et si une catégorie a été sélectionnée
+        //le bouton d'ajout est activé
+        addBtn.classList.remove("not-allowed"); // Retire la classe "not-allowed" du bouton d'ajout
+        addBtn.classList.add("allowed");// Ajoute la classe "allowed" au bouton d'ajout
+    }
 }
