@@ -71,7 +71,7 @@ fetch("http://localhost:5678/api/categories") // On effectue une requête HTTP G
     })
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-/*Création dynamique des galeries*/
+/*Création dynamique des galeries pour la homepage*/
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 let boutons;
@@ -113,13 +113,86 @@ function affichageProjets(){ // Fonction pour afficher les projets dynamiquement
 
 affichageProjets(); // Appelle la fonction pour afficher les projets
 
-function affichageProjetsModale() { // Fonction pour afficher les projets modaux
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/*Création dynamique des galeries pour la Fenetre MODALE*/
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+function affichageProjetsModale() { // // Cette fonction affiche les projets dans une fenêtre modale
     fetch("http://localhost:5678/api/works") // Effectue une requête HTTP GET pour récupérer des informations sur les projets depuis l'API
-    .then(function(response) { //utilisons la méthode .then pour traiter la réponse de la requête
-        if(response.ok) {
-            return response.json();
+    .then(function(response) {     // on utilise la méthode .then pour traiter la réponse de la requête
+        if(response.ok) { //  Si la réponse est "ok" = requet reussie 
+            return response.json(); // alors les données de la réponse sont converties en format JSON
         }
     })
+
+    .then(function(value){ //Une fois les données obtenues, le code parcourt chaque projet (dans la variable value)
+        value.forEach((work) => { // à l'aide d'une boucle forEach 
+            //pour chaque projet, des éléments HTML sont créés de manière dynamique pour afficher
+            let projets = work; // Crée une variable "projets" pour stocker les données du projet en cours
+            let galerieModale = document.querySelector(".gallery-modale"); // Sélectionne l'élément HTML avec la classe "gallery-modale"
+            let conteneurModale = document.createElement("figure"); // Crée un élément de type "figure" pour afficher un projet
+            let elementImageModale = document.createElement("img"); // Crée un élément "img" pour afficher l'image du projet modal
+            let arrow = document.createElement("i"); // Crée un élément "i" pour afficher une icône de flèche
+            let trash = document.createElement("i"); // Crée un élément "i" pour afficher une icône de poubelle (pour la suppression du projet)
+            let elementTexteModale = document.createElement("figcaption"); // Crée un élément "figcaption" pour afficher le texte (légende) du projet modal
+
+            elementImageModale.src = work.imageUrl; // Définit l'URL de l'image du projet
+           
+            trash.classList.add("fa-solid", "fa-trash-can", "icon");   // Ajoute des classes aux éléments HTML pour le style
+            conteneurModale.setAttribute("id", work.id);  // Attribut un ID à l'élément de conteneur du projet modal
+            trash.setAttribute("id", work.id);  // Attribut un ID à l'icône de poubelle du projet modal
+            conteneurModale.setAttribute("data-id", work.categoryId);// Attribut un attribut "data-id" à l'élément de conteneurModale en utilisant l'ID de catégorie du projet modal
+            // Ajoute des classes aux éléments pour le style
+            elementImageModale.classList.add("img-projets", "img-projets-modale");
+            conteneurModale.classList.add("projets-modale");
+            
+            // Ajoute les éléments à la galerie modale
+            galerieModale.appendChild(conteneurModale); // Ajoute le conteneur du projet modal à la galerie modale
+            conteneurModale.appendChild(elementImageModale); // Ajoute l'image du projet modal au conteneur
+            conteneurModale.appendChild(arrow); // Ajoute l'icône de flèche au conteneur
+            conteneurModale.appendChild(trash); // Ajoute l'icône de poubelle au conteneur
+            conteneurModale.appendChild(elementTexteModale); // Ajoute le texte du projet modal au conteneur
+
+ /////////////////////////////////////////////////////////////////////////////////////////////////
+ //  ********** Suppression des travaux **********
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+    trash.addEventListener('click', (event) => deleteProjet(event));   // Ajoute un événement de clic pour la suppression du projet
+
+
+    const token = sessionStorage.getItem("token"); // Récupère le jeton de session stocké dans le sessionStorage
+    const idProject = projets.id; // récupère l'ID du projet modal qu'on souhaite supprimer
+
+    function deleteProjet(event) { // Fonction appelée pour gérer la suppression du projet modal
+        let figure = event.target.closest('figure') // Trouve l'élément figure le plus proche du bouton de suppression qu'on a cliqué
+        figure.remove(); //Puis Supprime l'élément figure du projet modal de l'affichage
+
+        let figureId = figure.id;  // Ensuite, la fonction récupère l'ID du projet modal qu'on vient de supprimer.
+
+        let arrayGalerie = document.querySelectorAll('.gallery figure'); // Sélectionne tous les éléments figure dans la galerie
+        let deleteWork = Object.values(arrayGalerie).filter(projet => projet.id === figureId) 
+        //En utilisant l'ID du projet modal supprimé, elle filtre et trouve l'élément "figure" correspondant dans la galerie principale
+        deleteWork[0].remove(); // puis le supprime de cette galerie
+        
+        fetch(`http://localhost:5678/api/works/${idProject}`, { // Effectue une requête HTTP DELETE pour supprimer le projet du serveur
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Inclut le jeton de session dans les en-têtes pour l'authentification
+            }
+        })
+
+        .catch(function(error) { // Gère les erreurs potentielles lors de la suppression
+        });         // En cas d'erreur, aucune action n'est entreprise
+
+    }
+
+       })
+    })
+
+
+
     .then(() => {
         travaux = document.querySelectorAll(".projets"); // Sélectionne tous les éléments ayant la classe "projets" et les stocke dans la variable "travaux"
     })
@@ -171,60 +244,62 @@ if (sessionStorage.token == null) { //Si le token de session n'est pas présent
     document.querySelector(".filters-btns").style.display = "flex"; //affiche les boutons de filtres
 } // ça donne à l'utilisateur la possibilité de se connecter et de voir les projets 
 
-// // ******************************************************************************
-/**********************FENETRE MODALE*************************************************/
-// // ******************************************************************************
+// // *******************************************************************************************************************************************************
+/**********************Ouverture au clic sur Modifier/ fermeture sur la cross ou en dehors de la FENETRE MODALE*************************************************/
+// // ***********************************************************************************************************************************************************
 
-let modale = null;
+let modale = null; //On initialise une variable modale à null
 
-document.querySelector('.open').addEventListener('click', (event) =>{
-    event.preventDefault();
-    const target = document.querySelector('.modale'); 
-    target.style.display = "flex";
-    modale = target;
-    modale.addEventListener('click', closeModale);
-    let closeButton =  modale.querySelectorAll('.close');
+document.querySelector('.open').addEventListener('click', (event) =>{ //On ajoute un écouteur d'événement de clic à "open". Lorsque cet élément est cliqué, la fonction anonyme est exécutée. Elle prend un objet "event" en argument, qui représente l'événement de clic
+    event.preventDefault(); // On empêche le comportement par défaut de l'événement de clic, ce qui empêche par exemple le navigateur de recharger la page
+    const target = document.querySelector('.modale'); //On sélectionne l'élément HTML avec la classe "modale" et on le stocke dans une variable appelée "target"
+    target.style.display = "flex"; //On change le style de l'élément "target" pour le faire apparaître en utilisant la valeur "flex" (c'est-à-dire l'afficher)
+    modale = target; //On affecte la valeur de "target" à la variable "modale". Maintenant, "modale" contient l'élément "target" qui est actuellement ouvert
+    modale.addEventListener('click', closeModale); //On ajoute un écouteur d'événement de clic à "modale". Lorsque l'élément "modale" est cliqué, la fonction "closeModale" sera appelée
+    let closeButton =  modale.querySelectorAll('.close'); //On sélectionne tous les éléments avec la classe "close" qui se trouvent à l'intérieur de l'élément "modale" et on les stocke dans une variable "closeButton"
 
+
+    //On ajoute un écouteur d'événement de clic à chaque élément "cross" dans la liste "closeButton". Lorsqu'un de ces éléments est cliqué, la fonction "closeModale" sera appelée
     closeButton.forEach((cross) => {
         cross.addEventListener('click', closeModale);
     })  
-    modale.querySelector('.modale-conteneur-delete').addEventListener('click', stopPropagation);
-    modale.querySelector('.modale-conteneur-delete').addEventListener('click', stopPropagation);
+    modale.querySelector('.modale-conteneur-delete').addEventListener('click', stopPropagation); //On ajoute un écouteur d'événement de clic à l'élément "modale-conteneur-delete" à l'intérieur de l'élément "modale". Lorsque cet élément est cliqué, la fonction "stopPropagation" sera appelée
 })
 
-const closeModale = function(event) {
-    if(modale === null) return
-    event.preventDefault();
+const closeModale = function(event) { //On déclare une fonction nommée "closeModale" qui prend un objet "event" en argument.
+    if(modale === null) return //Si la variable "modale" est égale à "null", la fonction s'arrête ici.
+    event.preventDefault(); // On empêche le comportement par défaut de l'événement de clic
 
-    modale.style.display = "none";
-    modale.removeEventListener('click', closeModale);
-    let closeButton = modale.querySelectorAll('.close');
+    modale.style.display = "none"; //On change le style de l'élément "modale" pour le faire disparaître en utilisant la valeur "none" (c'est-à-dire le masquer)
+    modale.removeEventListener('click', closeModale); //On supprime l'écouteur d'événement de clic de l'élément "modale" pour éviter que la fonction "closeModale" soit appelée à nouveau
+    let closeButton = modale.querySelectorAll('.close'); // On sélectionne tous les éléments avec la classe "close" qui se trouvent à l'intérieur de l'élément "modale" (qui est actuellement ouvert) et on les stocke dans la variable "closeButton"
 
+    //On parcourt tous les éléments "cross" dans la liste "closeButton" (les éléments avec la classe "close" dans la modale) et on supprime l'écouteur d'événement de clic de chacun d'eux, en utilisant la fonction "closeModale"
     closeButton.forEach((cross) => {
         cross.removeEventListener('click', closeModale);    
     })  
 
-    let deleteModale = document.querySelector('.modale-conteneur-delete');
-    let addModale = document.querySelector('.modale-conteneur-add');
-    deleteModale.classList.remove('hide');
-    addModale.classList.add('hide');
-    modale.querySelector('.modale-conteneur-delete').removeEventListener('click', stopPropagation);
-    modale.querySelector('.modale-conteneur-add').removeEventListener('click', stopPropagation);
-    modale = null;
+    let deleteModale = document.querySelector('.modale-conteneur-delete'); //On sélectionne l'élément avec la classe "modale-conteneur-delete" et on le stocke dans une variable "deleteModale".
+    let addModale = document.querySelector('.modale-conteneur-add'); //On sélectionne l'élément avec la classe "modale-conteneur-add" et on le stocke dans une variable "addModale".
+    deleteModale.classList.remove('hide'); //On supprime la classe "hide" de l'élément "deleteModale", ce qui le fait apparaître
+    addModale.classList.add('hide'); //On ajoute la classe "hide" à l'élément "addModale", ce qui le fait disparaître
+    modale.querySelector('.modale-conteneur-delete').removeEventListener('click', stopPropagation); //On supprime l'écouteur d'événement de clic de l'élément "modale-conteneur-delete" pour la fonction "stopPropagation"
+    modale.querySelector('.modale-conteneur-add').removeEventListener('click', stopPropagation); //On supprime également l'écouteur d'événement de clic de l'élément
+    modale = null; //On réinitialise la variable "modale" en la définissant comme "null", indiquant que la modale est maintenant fermée
 
-    clearInputs()
+    clearInputs() //fonction pour effectuer des opérations de nettoyage, qui réinitialisent certains éléments de la page
 }
 
-const stopPropagation = function (event) {
+const stopPropagation = function (event) { //empêche la propagation de l'événement de clic vers les éléments parents pour éviter que des clics sur des éléments à l'intérieur de la modale ne se propagent et déclenchent des actions non souhaitées à l'extérieur de la modale
     event.stopPropagation();
 }
-  
-function clearInputs() {
-        nvTitle.value = "";
+
+function clearInputs() { //fonction effectuant plusieurs opérations de nettoyage pour réinitialiser certains éléments de la page après la fermeture de la modale
+        nvTitle.value = ""; //réinitialise la valeur de l'élément avec l'ID "nvTitle" à une chaîne vide, effaçant ainsi tout contenu saisi dans cet élément
         nvProjet.value="";
-        document.querySelector(".generique-conteneur").style.display = "flex";
-        imgPreview.innerHTML=""
-        imgPreview.style.display = "none";
-        document.querySelector('.success').textContent = ""
-        document.querySelector('.failure').textContent = ""
+        document.querySelector(".generique-conteneur").style.display = "flex"; //sert à réinitialiser le conteneur de la page pour qu'il soit de nouveau visible
+        imgPreview.innerHTML="" //sert pour réinitialiser l'aperçu d'une image après la fermeture de la modale
+        imgPreview.style.display = "none"; // sert pour masquer l'aperçu de l'image après la fermeture de la modale
+        document.querySelector('.success').textContent = "" //utilisé pour afficher des messages de succès, réinitialise son contenu texte à une chaîne vide, effaçant tout message de succès précédemment affiché
+        document.querySelector('.failure').textContent = "" // idem mais effaçant tout message d'échec précédemment affiché
 }

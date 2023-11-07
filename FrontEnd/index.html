@@ -13,38 +13,43 @@
 
 </head>
 <body>
-	<aside class="modale" id="modale">
-		<div class="modale-conteneur-delete">
-			<span class="close">&times;</span>
-			<div class="modale-title">
-				<span class="galerie-photo">Galerie photo</span>
+	<aside class="modale" id="modale"> <!-- élément aside avec  classe "modale" et ID "modale" -->
+		<div class="modale-conteneur-delete"> <!-- pour le contenu de la modale lors de la suppression -->
+			<span class="close">&times;</span> <!-- croix "X" pour fermer la modale -->
+			<div class="modale-title"> <!-- conteneur pour le titre de la modale. -->
+				<span class="galerie-photo">Galerie photo</span> <!-- titre "Galerie photo" de la modale 1 -->
 			</div>
 			<div class="gallery-modale"><!--GENERE DYNAMIQUEMENT => CONFERE JS index.js--></div>
-			<hr>
-			<div class="modale">
+			<hr> <!-- Séparateur entre le contenu de la galerie photo et le bouton "Ajouter une photo"-->
+			<div class="modale-button">
 				<button class="add">Ajouter une photo</button>
 			</div>
 		</div>
 
-		<div class="modale-conteneur-add hide">
-			<span class="close">
+		<div class="modale-conteneur-add hide"> <!-- autre conteneur pour le contenu de la modale lors de l'ajout, initialisé comme masqué -->
+			<span class="close"> <!-- croix "X" pour fermer la modale d'ajout -->
 				&times;
 			</span>
-			<i class="fa-solid fa-arrow-left fa-lg"></i>
-			<div class="modale-title">
-				<span class="galerie-photo">Ajout photo</span>
+			<i class="fa-solid fa-arrow-left fa-lg"></i> <!--  flèche indiquant retour en arrière -->
+			<div class="modale-title"> <!-- conteneur pour le titre de la modale d'ajout -->
+				<span class="galerie-photo">Ajout photo</span> <!-- Le titre "Ajout photo" de la modale 2 d'ajout. -->
 			</div>
-			<form class="add-form" method="post" >
-				<div class="add-form-conteneur">
+			<form class="add-form" method="post" > <!-- formulaire pour ajouter une nouvelle photo -->
+				
+				<div class="add-form-conteneur"> <!-- D'autres éléments de formulaire pour téléverser une image, 
+					saisir un titre et sélectionner une catégorie -->
 					<div class="generique-conteneur">
 						<i class="fa-solid fa-image fa-sm"></i>
 						<label class="add-img-label" for="add-img">+ Ajouter une photo</label>
 						<input class="add-img-input clear-input" type="file" name="add-img" id="add-img" accept=".jpg, .jpeg, .png" >
-						<span>jpg, png : 4mo max</span>
+						<span>jpg, png : 4 Mo maximum</span> 
+						<!-- Faire le test avec un photo > 4mo -->
 					</div>
 					<div class="preview-projet"></div>
 				</div>
-				<div class="add-form-inputs">
+
+				<div class="add-form-inputs">  <!-- D'autres éléments de formulaire pour saisir un titre et sélectionner une catégorie -->
+
 					<label class="title label" for="title">Titre</label>
 					<input class="title-input input-conteneur clear-input" type="text" name="title" id="title">
 					<label class="category label" for="category">Catégorie</label>
@@ -57,8 +62,9 @@
 						<button class="add-button not-allowed" type="submit">Valider</button>
 					</div> 
 				</div>
+
 			</form>
-			<div class="message">
+			<div class="message"> <!-- Un conteneur pour afficher des messages (succès ou échec) après l'ajout de la photo -->
 				<span class="success"></span>
 				<span class="failure"></span>	
 			</div>
