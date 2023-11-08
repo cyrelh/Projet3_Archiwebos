@@ -252,7 +252,7 @@ document.querySelector('.open').addEventListener('click', (event) =>{ //On ajout
     target.style.display = "flex"; //On change le style de l'élément "target" pour le faire apparaître en utilisant la valeur "flex" (c'est-à-dire l'afficher)
     modale = target; //On affecte la valeur de "target" à la variable "modale". Maintenant, "modale" contient l'élément "target" qui est actuellement ouvert
     modale.addEventListener('click', closeModale); //On ajoute un écouteur d'événement de clic à "modale". Lorsque l'élément "modale" est cliqué, la fonction "closeModale" sera appelée
-    let closeButton =  modale.querySelectorAll('.close'); //On sélectionne tous les éléments avec la classe "close" qui se trouvent à l'intérieur de l'élément "modale" et on les stocke dans une variable "closeButton"
+    let closeButton =  modale.querySelectorAll('.fa-xmark'); //On sélectionne tous les éléments avec la classe "close" qui se trouvent à l'intérieur de l'élément "modale" et on les stocke dans une variable "closeButton"
 
 
     //On ajoute un écouteur d'événement de clic à chaque élément "cross" dans la liste "closeButton". Lorsqu'un de ces éléments est cliqué, la fonction "closeModale" sera appelée
@@ -270,7 +270,7 @@ const closeModale = function(event) { //On déclare une fonction nommée "closeM
 
     modale.style.display = "none"; //On change le style de l'élément "modale" pour le faire disparaître en utilisant la valeur "none" (c'est-à-dire le masquer)
     modale.removeEventListener('click', closeModale); //On supprime l'écouteur d'événement de clic de l'élément "modale" pour éviter que la fonction "closeModale" soit appelée à nouveau
-    let closeButton = modale.querySelectorAll('.close'); // On sélectionne tous les éléments avec la classe "close" qui se trouvent à l'intérieur de l'élément "modale" (qui est actuellement ouvert) et on les stocke dans la variable "closeButton"
+    let closeButton = modale.querySelectorAll('.fa-xmark'); // On sélectionne tous les éléments avec la classe "close" qui se trouvent à l'intérieur de l'élément "modale" (qui est actuellement ouvert) et on les stocke dans la variable "closeButton"
 
     //On parcourt tous les éléments "cross" dans la liste "closeButton" (les éléments avec la classe "close" dans la modale) et on supprime l'écouteur d'événement de clic de chacun d'eux, en utilisant la fonction "closeModale"
     closeButton.forEach((cross) => {

@@ -15,21 +15,20 @@
 <body>
 	<aside class="modale" id="modale"> <!-- élément aside avec  classe "modale" et ID "modale" -->
 		<div class="modale-conteneur-delete"> <!-- pour le contenu de la modale lors de la suppression -->
-			<span class="close">&times;</span> <!-- croix "X" pour fermer la modale -->
+			<i class="fa-solid fa-xmark"></i> <!-- croix "X" pour fermer la modale -->
 			<div class="modale-title"> <!-- conteneur pour le titre de la modale. -->
 				<span class="galerie-photo">Galerie photo</span> <!-- titre "Galerie photo" de la modale 1 -->
 			</div>
 			<div class="gallery-modale"><!--GENERE DYNAMIQUEMENT => CONFERE JS index.js--></div>
-			<hr> <!-- Séparateur entre le contenu de la galerie photo et le bouton "Ajouter une photo"-->
+			<!-- <hr>  -->
+			<span class="separateur"></span><!-- Séparateur entre le contenu de la galerie photo et le bouton "Ajouter une photo"-->
 			<div class="modale-button">
 				<button class="add">Ajouter une photo</button>
 			</div>
 		</div>
 
 		<div class="modale-conteneur-add hide"> <!-- autre conteneur pour le contenu de la modale lors de l'ajout, initialisé comme masqué -->
-			<span class="close"> <!-- croix "X" pour fermer la modale d'ajout -->
-				&times;
-			</span>
+			<i class="fa-solid fa-xmark"></i> <!-- croix "X" pour fermer la modale d'ajout -->
 			<i class="fa-solid fa-arrow-left fa-lg"></i> <!--  flèche indiquant retour en arrière -->
 			<div class="modale-title"> <!-- conteneur pour le titre de la modale d'ajout -->
 				<span class="galerie-photo">Ajout photo</span> <!-- Le titre "Ajout photo" de la modale 2 d'ajout. -->
@@ -56,7 +55,7 @@
 						<option class="option" value="2">Appartement</option>
 						<option class="option" value="3">Hôtel & Restaurant</option>
 					</select>
-					<div class="hr">
+					<div class="separateur2">
 						<button class="add-button not-allowed" type="submit">Valider</button>
 					</div> 
 				</div>

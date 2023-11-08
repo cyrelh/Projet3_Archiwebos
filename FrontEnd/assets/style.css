@@ -403,7 +403,7 @@ footer nav ul {
 }
 
 
-.close {
+.fa-xmark {
 	position: absolute;
 	top: 32px;
 	right: 36px;
@@ -412,7 +412,7 @@ footer nav ul {
 	font-weight: 700;
 }
 
-.close:hover {
+.fa-xmark:hover {
 	color: #A80306;
 	cursor: pointer;
 }
@@ -422,9 +422,18 @@ footer nav ul {
 	justify-content: center;
 }
 
-hr {
+/* hr {
 	margin: 47px 0 38px;
+} */
+
+.separateur {
+	display: flex;
+    justify-content: center;
+	height: 1px;
+	background-color: #B3B3B3;
+	margin: 40px 0 30px 0 ;
 }
+
 
 /*************** FENETRE Modale 1 (GALERIE PHOTO) ***************/
 
@@ -614,24 +623,23 @@ hr {
 }
 
 
-.hr {
-	display: flex;
-    justify-content: center;
-	border-top: 1.4px solid #B3B3B3;
-	margin-top: 25px;
-	padding-top: 35px;
+.separateur2 {
+    width: 100%;
+    height: 1px;
+    background-color: #b3b3b3;
+	margin: 20px 0 40px 0;
 }
 
 .add-button { /*Style du bouton valider*/
 	font-family: 'Syne';
     font-weight: 700;
     color: white;
-    width: 240px;
+    width: 100%;
     text-align: center;
     border-radius: 60px;
     padding: 10px 49px;
     border: 0;
-    margin-bottom: 23px;
+    margin-top: 23px;
     cursor: pointer;
 }
 
@@ -643,9 +651,9 @@ hr {
 	background-color: #1D6154; /* validé --> vert background bouton valider*/
 }
 
-/* .fa-sm{
+.fa-sm{
 	font-size: 5em;
-} */
+}
 
 .message {
 	display: flex;
@@ -656,12 +664,14 @@ hr {
 	color: #A80306;
 	font-family: "Syne";
 	font-size: 12px;
+	margin-top: 40px;
 }
 
 .success {
 	color: #1D6154;
 	font-family: "Syne";
 	font-size: 12px;
+	margin-top: 40px;
 }
 
 
