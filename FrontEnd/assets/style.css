@@ -643,7 +643,25 @@ hr {
 	background-color: #1D6154; /* validé --> vert background bouton valider*/
 }
 
-.fa-sm{
+/* .fa-sm{
 	font-size: 5em;
+} */
+
+.message {
+	display: flex;
+    justify-content: center;
 }
+
+.failure {
+	color: #A80306;
+	font-family: "Syne";
+	font-size: 12px;
+}
+
+.success {
+	color: #1D6154;
+	font-family: "Syne";
+	font-size: 12px;
+}
+
 

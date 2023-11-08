@@ -293,7 +293,7 @@ const stopPropagation = function (event) { //empêche la propagation de l'évén
 }
 
 function clearInputs() { //fonction effectuant plusieurs opérations de nettoyage pour réinitialiser certains éléments de la page après la fermeture de la modale
-        newTitle.value = ""; //réinitialise la valeur de l'élément avec l'ID "nvTitle" à une chaîne vide, effaçant ainsi tout contenu saisi dans cet élément
+        newTitle.value = ""; //réinitialise la valeur de l'élément avec l'ID "newTitle" à une chaîne vide, effaçant ainsi tout contenu saisi dans cet élément
         newProjet.value="";
         document.querySelector(".generique-conteneur").style.display = "flex"; //sert à réinitialiser le conteneur de la page pour qu'il soit de nouveau visible
         imgPreview.innerHTML="" //sert pour réinitialiser l'aperçu d'une image après la fermeture de la modale
@@ -396,4 +396,91 @@ function colorButton() { // fonction pour la couleur du bouton, on vérifie si l
         addBtn.classList.remove("not-allowed"); // Retire la classe "not-allowed" du bouton d'ajout
         addBtn.classList.add("allowed");// Ajoute la classe "allowed" au bouton d'ajout
     }
+}
+
+// ****************************************************************************************************//
+/************************** Message d'erreur / ajout du projet*** ***************************/
+// ****************************************************************************************************//
+
+addBtn.addEventListener("click", (event) => addProject(event)) // quand l'utilisateur clique sur le bouton "Ajouter", déclenche la fonction addProject
+
+function addProject(event) { // on définit la fonction 
+    event.preventDefault(); // empêche le comportement par défaut du formulaire lors de la soumission
+    let errorMessage1 = document.querySelector('.failure'); // sélectionne l'élément affichant les messages d'erreur
+    let errorMessage2 = document.querySelector('.failure'); // sélectionne l'élément affichant les messages d'erreur
+    let successMessage = document.querySelector('.success'); // sélectionne l'élément affichant les messages de succès
+    let tailleMax = 4*1024*1024; // taille maximale autorisée pour l'image (4 Mo)
+    let picToSend = newProjet.files[0]; // on récupère le fichier image à envoyer
+
+    if (newTitle.value === "" || !imgPreview.firstChild) { // Si le champ du titre est vide OU s'il n'y a pas de prévisualisation d'image
+        errorMessage1.textContent = "Attention ! Veuillez remplir tous les champs requis"; // alors on affiche le message d'erreur pour indiquer à l'utilisateur ce qui ne va pas
+        successMessage.textContent = ""; //Le message de succès est effacé pour s'assurer qu'aucun message de succès précédent ne reste affiché
+        return //La fonction addProject est immédiatement terminée à ce stade, sans poursuivre le traitement ni envoyer les données au serveur
+    }
+
+    if (picToSend.size > tailleMax ) { // si la taille de l'image dépasse la limite
+        errorMessage2.textContent = "Attention ! Votre fichier est trop volumineux (maximum 4 Mo)"; // alors on affiche le message d'erreur pour indiquer à l'utilisateur ce qui ne va pas
+        successMessage.textContent = ""; //Le message de succès est effacé pour s'assurer qu'aucun message de succès précédent ne reste affiché
+        return //La fonction addProject est immédiatement terminée à ce stade, sans poursuivre le traitement ni envoyer les données au serveur
+    }
+
+    colorButton(); // Appelle la fonction colorButton pour mettre à jour l'état du bouton.
+
+    let formData = new FormData(); // Crée un objet FormData pour envoyer les données du formulaire
+    formData.append("image", newProjet.files[0]); // Ajoute le fichier image au formulaire
+    formData.append("title", newTitle.value); // Ajoute le titre au formulaire
+    formData.append("category", slcCateg.value); // Ajoute la catégorie sélectionnée au formulaire
+    let token = sessionStorage.getItem('token') // Récupère le jeton d'authentification de la session
+
+    fetch("http://localhost:5678/api/works", { // Effectue une requête HTTP POST vers l'URL
+        method: "POST", // Utilise la méthode POST pour envoyer les données au serveur
+        headers: {
+            "Authorization": `Bearer ${token}` // Ajoute le jeton d'authentification dans les en-têtes de la requête
+        },
+        body: formData, // Utilise l'objet FormData (contenant les données du formulaire) comme corps de la requête pour envoyer des données au serveur
+    })
+
+    .then(response => { // Gère la réponse de la requête
+        if (!response.ok) {
+        throw new Error("Erreur de la requête"); // Si la réponse n'est pas OK (statut HTTP différent de 200), génère une erreur avec le message "Erreur de la requête"
+        }
+    })
+
+    .then(function(data){ // Traite les données de la réponse en cas de succès
+        const successMessage = document.querySelector(".success"); // on sélectionne l'élément HTML pour afficher un message de succès
+        successMessage.textContent = 'Bravo ! Votre image a été ajoutée avec succès'; //contenu du message de succès pour informer l'utilisateur que l'image a été ajoutée avec succès
+
+        document.querySelector('.gallery').innerHTML=""; // efface le contenu de l'élément HTML avec la classe "gallery"
+        document.querySelector('.gallery-modale').innerHTML=""; // efface le contenu de l'élément HTML avec la classe "gallery-modale"
+
+        affichageProjets(); // Appelle une fonction pour afficher les projets mis à jour
+        affichageProjetsModale(); // Appelle une fonction pour afficher les projets dans la modale
+        clearAfterSent(); // Appelle une fonction pour réinitialiser le formulaire après l'envoi
+    })
+
+    .catch(error => { // ça gère les erreurs qui se produisent pendant la requête
+        console.error("Erreur", error); // ça affiche une erreur dans la console avec des informations sur l'erreur
+        errorMessage1.textContent = 'Erreur lors de l\'ajout du projet'; //message d'erreur pour informer l'utilisateur qu'il y a eu une erreur lors de l'ajout du projet
+        errorMessage2.textContent = 'Erreur lors de l\'ajout du projet'; //message d'erreur pour informer l'utilisateur qu'il y a eu une erreur lors de l'ajout du projet
+
+    })
+}
+
+function clearAfterSent() { // Définition de la fonction clearAfterSent
+        slcCateg.value = "1"; // Réinitialise la valeur de la catégorie
+        newTitle.value = ""; // Réinitialise la valeur du titre
+        newProjet.value=""; // Réinitialise la valeur du fichier image
+        document.querySelector(".generique-conteneur").style.display = "flex"; // Réaffiche le conteneur générique
+        imgPreview.innerHTML=""; // Efface la prévisualisation de l'image
+        imgPreview.style.display = "none"; // Masque la prévisualisation de l'image
+        addBtn.classList.remove('allowed'); // Retire la classe "allowed" du bouton
+        addBtn.classList.add('not-allowed'); // Ajoute la classe "not-allowed" au bouton
+}
+
+newProjet.addEventListener('change', clearMessage); // Lorsque l'utilisateur sélectionne un fichier image, déclenche la fonction clearMessage
+newTitle.addEventListener("keydown", clearMessage); // Lorsque l'utilisateur tape une touche dans le champ du titre, déclenche la fonction clearMessage
+
+function clearMessage() { // Définition de la fonction clearMessage
+    document.querySelector('.failure').textContent=""; // Efface le message d'erreur
+    document.querySelector('.success').textContent="";  // Efface le message de succès
 }
