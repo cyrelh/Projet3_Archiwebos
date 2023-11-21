@@ -1,25 +1,29 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-/*Création dynamique des galeries pour la homepage*/
+/*1Création dynamique des galeries pour la homepage*/
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 let boutons;
 let travaux;
 
 function affichageProjets(){ // *1/ Utilisation de la fonction affichageProjets()   Fonction pour afficher les projets dynamiquement
+        // On nettoye le contenu de la galerie
+        const galerie = document.querySelector('.gallery');
+        galerie.innerHTML = "";
+
     fetch("http://localhost:5678/api/works") // *2/Appel à l’API : fonction fetch() utilisée pour envoyer une requête HTTP GET àl'URL de l'API pour récupérer des informations sur les projets depuis l'API
-    //*Cette fonction renvoie une promesse qui résout la réponse de la requête HTTP    
+    //2*Cette fonction renvoie une promesse qui résout la réponse de la requête HTTP    
     .then(function(response) {  // *3 Traitement de la réponse : 1ère méthode .then intervient après l’appel à fetch() pour traiter la réponse de la requête HTTP... 
             if(response.ok) { //  *Si réponse est OK (statut HTTP 200), la promesse est résolue
                 return response.json();  // *alors elle convertit les données de la réponse en format JSON
             }
         })
         
-        .then(function(value){ // *4 Traitement des données récupérées: 2ème .then intervient après la réso de la 1ère promesse, traite les data JSON récupérées           
+        .then(function(value){ // *3bis Traitement des données récupérées: 2ème .then intervient après la réso de la 1ère promesse, traite les data JSON récupérées           
             const galerie = document.querySelector(".gallery"); // *Sélectionne l'élément avec la classe "gallery"
 
             value.forEach((work) => { // *méthode .forEach utilisée pour itérer sur chaque projet dans la liste value
-// *Pour chaque projet, crée dynamiquement les éléments  HTML de la galerie pour afficher l’image et le titre chaque projet
+// *4 Pour chaque projet, crée dynamiquement les éléments  HTML de la galerie pour afficher l’image et le titre chaque projet
                 let conteneur = document.createElement("figure"); // Crée un élément figure pour le projet
                 let elementPic = document.createElement("img"); // Crée un élément image pour la photo du projet
                 let elementText = document.createElement("figcaption"); // Crée un élément de légende pour le titre du projet
@@ -30,7 +34,7 @@ function affichageProjets(){ // *1/ Utilisation de la fonction affichageProjets(
                 conteneur.setAttribute("id", work.id); // Attribut un ID au projet
                 conteneur.classList.add("projets"); // Ajoute la classe "projets" à l'élément figure
                 elementPic.classList.add("img-projets"); // Ajoute la classe "img-projets" à l'élément image
-// *6 Ajout des éléments à la galerie : ajout des éléments à la classe .gallery dans le DOM
+// *6  ajout des éléments à la classe .gallery dans le DOM
                 galerie.appendChild(conteneur); // Ajoute l'élément figure à la galerie
                 conteneur.appendChild(elementPic); // Ajoute l'élément image à l'élément figure
                 conteneur.appendChild(elementText); // Ajoute l'élément de légende à l'élément figure
@@ -40,13 +44,18 @@ function affichageProjets(){ // *1/ Utilisation de la fonction affichageProjets(
         .catch(function(error){         // Gère les erreurs potentielles
             alert ("Erreur dans la création dynamique de la galerie");
         })
+           // Ajoute les projets à la galerie 
+        projects.forEach(project => {
+            galerie.innerHTML += creerHTMLProjet(project.title, project.imageSrc, project.category);
+        });
+    
     }
 // CONCLUSION :  on a récupéré dynamiquement des travaux s’affichant depuis le backend et on les a ajoutés à la galerie de manière asynchrone
 
 //affichageProjets(); // Appelle la fonction pour afficher les projets
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-/*Création dynamique des galeries pour la Fenetre MODALE*/
+/*5Création dynamique des galeries pour la Fenetre MODALE*/
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 //1 Sélectionne élément HTML qui représente la galerie principale
@@ -127,7 +136,7 @@ function affichageProjetsModale() { // // Cette fonction affiche les projets dan
             conteneurModale.appendChild(elementTextModale); // Ajoute le texte du projet modal au conteneur
 
  /////////////////////////////////////////////////////////////////////////////////////////////////
- //  ********** Suppression des travaux **********
+ // 6 ********** Suppression des travaux **********
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 //1 Dans la fonction deleteProjet(event), Quand icone poubelle est cliquée -->  elle trouve élément figure, le supprime visuellement des galeries principales + galerie modale
@@ -182,7 +191,7 @@ function affichageProjetsModale() { // // Cette fonction affiche les projets dan
 affichageProjetsModale(); // Appel la fonction pour afficher les projets modaux
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-/*Création dynamique des boutons filtres*/
+/*2Création dynamique des boutons filtres*/
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 fetch("http://localhost:5678/api/categories") //1 Requête HTTP GET pour les catégories: La fonction commence par effectuer une requête HTTP GET à URL pour récupérer les catégories depuis l'API
@@ -264,10 +273,10 @@ fetch("http://localhost:5678/api/categories") //1 Requête HTTP GET pour les cat
 
 
 // // ******************************************************************************
-/*Suite au login validé --> en mode édition (homepage edit)*/
+/*4Suite au login validé --> en mode édition (homepage edit)*/
 // // ******************************************************************************
 
-// 1 Vérification du Token de Session: On vérifie si token de session est présent dans le sessionStorage. La présence d'un token indique que l'utilisateur est connecté.
+// 1 On vérifie si token de session est présent dans le sessionStorage. La présence d'un token indique que l'utilisateur est connecté.
 // On sélectionne tous les éléments classe "mode-edition" et on les affiche en définissant leur style "display" sur "flex". 
 //Cela met la page en mode édition, où l'utilisateur peut modifier certains éléments.
 
@@ -297,7 +306,7 @@ if(sessionStorage.token !== null) { // Si token de session (preuve que l'user es
         logout(); // on crée événement pour permettre à l'utilisateur de se déconnecter en cliquant sur le bouton
     });
 } 
-// 4 Gestion de l'Interface si Non Connecté: Si aucun token de session n'est présent, cela signifie que l'utilisateur n'est pas connecté. 
+// 4 Si aucun token de session n'est présent, cela signifie que l'utilisateur n'est pas connecté. 
 // Dans ce cas, les éléments "mode édition" sont masqués, le bouton de déconnexion est caché, le bouton de connexion est affiché, et les boutons de filtres sont visibles.
 
 if (sessionStorage.token == null) { //Si le token de session n'est pas présent
@@ -311,10 +320,10 @@ if (sessionStorage.token == null) { //Si le token de session n'est pas présent
 } // ça donne à l'utilisateur la possibilité de se connecter et de voir les projets 
 
 // // *******************************************************************************************************************************************************
-/**********************Ouverture au clic sur Modifier/ fermeture sur la cross ou en dehors de la FENETRE MODALE*************************************************/
+/**********************7Ouverture au clic sur Modifier/ fermeture sur la cross ou en dehors de la FENETRE MODALE*************************************************/
 // // ***********************************************************************************************************************************************************
 
-// 1 Initialisation et Ouverture de la Fenêtre Modale : On initialise la variable modale à null.
+// 1 On initialise la variable modale à null.
 // Lorsqu'un élément avec la classe "open" est cliqué, la fenêtre modale est affichée.
 // La fonction closeModale est attachée à la modale, à la croix et à certains éléments à l'intérieur de la modale pour gérer la fermeture.
 
@@ -388,7 +397,7 @@ function clearInputs() { //fonction effectuant plusieurs opérations de nettoyag
 
 
 // ******************************************************************************//
-/************************** Fenêtre "ajout de projet" ***************************/
+/************************** 8Fenêtre "ajout de projet" ***************************/
 // ******************************************************************************//
 
 let newProjet = document.querySelector('.add-img-input');  // input de fichier pour ajouter une image --> on sélectionne l'élément HTML avec la classe "add-img-input"  et stocke cet élément dans la variable newProjet 
@@ -415,7 +424,7 @@ addProjets.addEventListener('click', (event) => { // écouteur d'événements au
 })
 
 //2 . Gestion du Bouton de Retour représenté par l'icône de flèche gauche (retourArrow), est sélectionné. 
-//Un écouteur d'événements est ajouté à cet élément, permettant de revenir à la vue de suppression lorsque l'utilisateur clique dessus.
+//Un écouteur d'événements est ajouté à cet élément, permettant de revenir en arrière lorsque l'utilisateur clique dessus.
 
 let retourArrow = document.querySelector(".fa-arrow-left"); // flèche de retour ou de retour en arrière --> on sélectionne un élément HTML avec la classe "fa-arrow-left" 
 retourArrow.addEventListener('click', (event) => { //Lorsque l'utilisateur clique sur cet élément flèche retour en arrière, la fonction de rappel est déclenchée
@@ -426,7 +435,7 @@ retourArrow.addEventListener('click', (event) => { //Lorsque l'utilisateur cliqu
 })
 
 // ****************************************************************************************************//
-/************************** Prévisualisation du file photo lors de l'upload ***************************/
+/************************** 9Prévisualisation du file photo lors de l'upload ***************************/
 // ****************************************************************************************************//
 
 //1 gère la prévisualisation d'une image --> lorsqu'un utilisateur sélectionne un fichier à travers le champ newProjet.
@@ -478,7 +487,7 @@ function displayWork(event, file) {  //fonction displayWork est appelée lorsque
 
 
 // ****************************************************************************************************//
-/************************** Changement couleur bouton quand formulaire rempli ***************************/
+/**************************10 Changement couleur bouton quand formulaire rempli ***************************/
 // ****************************************************************************************************//
 
 // 1 ON gère le changement de couleur du bouton d'ajout en fonction de la saisie de l'utilisateur dans le formulaire. 
@@ -509,7 +518,7 @@ function colorButton() { // fonction pour la couleur du bouton, on vérifie si l
 }
 
 // ****************************************************************************************************//
-/************************** Message d'erreur / ajout du projet*** ***************************/
+/**************************11 Message d'erreur / ajout du projet*** ***************************/
 // ****************************************************************************************************//
 //1 La fonction addProject est déclenchée par le clic sur le bouton "Ajouter" et gère le processus d'ajout d'un projet.
 addBtn.addEventListener("click", (event) => addProject(event)) // quand l'utilisateur clique sur le bouton "Ajouter", déclenche la fonction addProject
@@ -545,7 +554,7 @@ function addProject(event) { // on définit la fonction
 
 
 //3 Ainsi, picToSend contient une représentation binaire du fichier image que l'utilisateur a choisi. 
-//Vous utilisez ensuite cet objet File dans la construction d'un objet FormData pour l'envoyer dans le corps de la requête POST à l'API
+//On utilise ensuite cet objet File dans la construction d'un objet FormData pour l'envoyer dans le corps de la requête POST à l'API
 
     let formData = new FormData(); // Crée un objet FormData pour envoyer les données du formulaire
 //3 BIS Sert à l'envoi de fichiers binaires (images) vers un serveur via une requête HTTP. 
@@ -578,8 +587,13 @@ function addProject(event) { // on définit la fonction
         document.querySelector('.gallery').innerHTML=""; // efface le contenu de l'élément HTML avec la classe "gallery"
         document.querySelector('.gallery-modale').innerHTML=""; // efface le contenu de l'élément HTML avec la classe "gallery-modale"
 
+            // Utilise setTimeout pour assurer que l'effacement a eu lieu avant d'appeler les fonctions d'affichage
+    setTimeout(() => {
         affichageProjets(); // Appelle une fonction pour afficher les projets mis à jour
         affichageProjetsModale(); // Appelle une fonction pour afficher les projets dans la modale
+
+    }, 0);
+
         clearAfterSent(); // Appelle une fonction pour réinitialiser le formulaire après l'envoi
     })
 
